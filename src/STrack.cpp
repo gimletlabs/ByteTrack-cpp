@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-byte_track::STrack::STrack(const Rect<float>& rect, const float& score) :
+byte_track::STrack::STrack(const Rect<float>& rect, const float& score, const int& cls) :
     kalman_filter_(),
     mean_(),
     covariance_(),
@@ -10,6 +10,7 @@ byte_track::STrack::STrack(const Rect<float>& rect, const float& score) :
     state_(STrackState::New),
     is_activated_(false),
     score_(score),
+    class_(cls),
     track_id_(0),
     frame_id_(0),
     start_frame_id_(0),
@@ -35,9 +36,15 @@ const bool& byte_track::STrack::isActivated() const
 {
     return is_activated_;
 }
+
 const float& byte_track::STrack::getScore() const
 {
     return score_;
+}
+
+const int& byte_track::STrack::getClass() const
+{
+    return class_;
 }
 
 const size_t& byte_track::STrack::getTrackId() const
@@ -86,6 +93,7 @@ void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame
     state_ = STrackState::Tracked;
     is_activated_ = true;
     score_ = new_track.getScore();
+    class_ = new_track.getClass();
     if (0 <= new_track_id)
     {
         track_id_ = new_track_id;
@@ -112,6 +120,8 @@ void byte_track::STrack::update(const STrack &new_track, const size_t &frame_id)
     state_ = STrackState::Tracked;
     is_activated_ = true;
     score_ = new_track.getScore();
+    // This line is commented out in the python version. Which is correct?
+    class_ = new_track.getClass();
     frame_id_ = frame_id;
     tracklet_len_++;
 }
