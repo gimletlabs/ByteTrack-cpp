@@ -123,7 +123,8 @@ TEST(ByteTrack, BYTETracker)
         byte_track::BYTETracker tracker(fps, track_buffer);
         for (const auto &[frame_id, objects] : inputs_ref)
         {
-            const auto outputs = tracker.update(objects);
+            const auto update_results = tracker.update(objects);
+            const auto outputs = update_results.active_stracks;
 
             // Verify between the reference data and the output of the BYTETracker impl
             EXPECT_EQ(outputs.size(), outputs_ref[frame_id].size());

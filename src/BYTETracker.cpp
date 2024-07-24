@@ -26,7 +26,7 @@ byte_track::BYTETracker::~BYTETracker()
 {
 }
 
-std::vector<byte_track::BYTETracker::STrackPtr> byte_track::BYTETracker::update(const std::vector<Object>& objects)
+byte_track::BYTETracker::TrackingUpdate byte_track::BYTETracker::update(const std::vector<Object>& objects)
 {
     ////////////////// Step 1: Get detections //////////////////
     frame_id_++;
@@ -229,7 +229,11 @@ std::vector<byte_track::BYTETracker::STrackPtr> byte_track::BYTETracker::update(
         }
     }
 
-    return output_stracks;
+    return {
+        output_stracks,
+        lost_stracks_,
+        current_removed_stracks,
+    };
 }
 std::vector<byte_track::BYTETracker::STrackPtr> byte_track::BYTETracker::jointStracks(const std::vector<STrackPtr> &a_tlist,
                                                                                       const std::vector<STrackPtr> &b_tlist) const

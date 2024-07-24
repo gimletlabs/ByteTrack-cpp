@@ -17,6 +17,12 @@ class BYTETracker
 public:
     using STrackPtr = std::shared_ptr<STrack>;
 
+    struct TrackingUpdate {
+        std::vector<STrackPtr> active_stracks;
+        std::vector<STrackPtr> lost_stracks;
+        std::vector<STrackPtr> removed_stracks;
+    };
+
     BYTETracker(const int& frame_rate = 30,
                 const int& track_buffer = 30,
                 const float& track_thresh = 0.5,
@@ -24,7 +30,7 @@ public:
                 const float& match_thresh = 0.8);
     ~BYTETracker();
 
-    std::vector<STrackPtr> update(const std::vector<Object>& objects);
+    TrackingUpdate update(const std::vector<Object>& objects);
 
 private:
     std::vector<STrackPtr> jointStracks(const std::vector<STrackPtr> &a_tlist,
